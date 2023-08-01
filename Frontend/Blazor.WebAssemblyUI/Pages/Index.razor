@@ -1,0 +1,59 @@
+﻿@page "/"
+@using Blazor.WebAssemblyUI.Models;
+@using WebAssemblyUI.Services
+@inject GameApiClient GameApiClient
+
+<div class="game-grid">
+    @if (_grid != null && !string.IsNullOrEmpty(_grid.GameState))
+    {
+        var rows = _grid.GameState.Split("\r\n");
+        var rowCount = rows.Length;
+        var colCount = rows[0].Length;
+
+        for (int i = 0; i < rowCount; i++)
+        {
+            <div class="grid-row">
+                @foreach (var cell in rows[i])
+                {
+                    <div class="grid-cell">@cell</div>
+                }
+            </div>
+        }
+
+        <div class="animal-info">
+            <h4>[ANIMAL INFO]</h4>
+            <p>@_animalInfo</p>
+        </div>
+    }
+</div>
+
+@code {
+    private FrontendGameStateDto? _grid { get; set; }
+    private string? _animalInfo { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GameApiClient.StartGameAsync();
+        await UpdateGameState();
+    }
+
+    private async Task UpdateGameState()
+    {
+        var waitTimeMillis = 500;
+
+        while (true)
+        {
+            _grid = await GameApiClient.GetGameStateAsync();
+
+            await UpdateAnimalInfo();
+            StateHasChanged();
+
+            await Task.Delay(waitTimeMillis);
+        }
+    }
+
+    private async Task UpdateAnimalInfo()
+    {
+        _animalInfo = await GameApiClient.GetAnimalInfoAsync();
+    }
+}

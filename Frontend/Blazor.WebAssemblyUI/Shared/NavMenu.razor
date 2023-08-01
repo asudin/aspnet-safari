@@ -1,0 +1,56 @@
+﻿@using Blazor.WebAssemblyUI.Models;
+@using Blazor.WebAssemblyUI.Services;
+@inject GameApiClient GameApiClient
+
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">Blazor.WebAssemblyUI</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@_navMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        @if (_animalsList != null)
+        {
+            @foreach (var animal in _animalsList.AnimalsList)
+            {
+                var animalKey = animal[0];
+
+                <div class="nav-item px-3">
+                    <button type="button" class="btn" @onclick="() => AddAnimal(animalKey)">
+                        <span class="oi oi-plus" aria-hidden="true"></span> Add @animal
+                    </button>
+                </div>
+            }
+        }
+    </nav>
+</div>
+
+@code {
+    private FrontendAnimalsListDto? _animalsList { get; set; }
+    private bool _collapseNavMenu = true;
+    private string? _navMenuCssClass => _collapseNavMenu ? "collapse" : null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateAnimalsList();
+    }
+
+    private void ToggleNavMenu()
+    {
+        _collapseNavMenu = !_collapseNavMenu;
+    }
+
+    private async Task UpdateAnimalsList()
+    {
+        _animalsList = await GameApiClient.GetAnimalsList();
+    }
+
+    private async Task AddAnimal(char key)
+    {
+        await GameApiClient.AddAnimalAsync(key);
+    }
+}

@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>Sudin.Util.SavannaAnimals</PackageId>
+    <Title>SavannaAnimals</Title>
+    <Authors>ASudin</Authors>
+    <Description>Animal library for Savanna console game animal creation and import</Description>
+    <Copyright></Copyright>
+    <PackageTags>Savanna, Animals, Import, Console Game</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\Users\a.sountin.or.sudin\Downloads\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
